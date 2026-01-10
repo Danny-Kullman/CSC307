@@ -7,12 +7,15 @@ import Form from "./Form";
 function MyApp() {
   const [characters, setCharacters] = useState([]);
 
-
   function removeOneCharacter(index) {
     const updated = characters.filter((character, i) => {
       return i !== index;
     });
     setCharacters(updated);
+  }
+
+  function updateList(person) {
+  setCharacters([...characters, person]);
   }
 
   return (
@@ -21,10 +24,12 @@ function MyApp() {
         characterData={characters}
         removeCharacter={removeOneCharacter}
       />
-      <Form />
+      <Form 
+        handleSubmit={updateList} 
+      />
     </div>
   );
 
 }
 
-export default MyApp
+export default MyApp;
