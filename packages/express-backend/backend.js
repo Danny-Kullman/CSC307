@@ -54,13 +54,15 @@ const findUserByName = (name) => {
 
 app.get("/users", (req, res) => {
   const name = req.query.name;
-  if (name != undefined) {
-    let result = findUserByName(name);
-    result = { users_list: result };
-    res.send(result);
-  } else {
-    res.send(users);
+  const job = req.query.job
+  let result = users.users_list;
+
+  if (name !== undefined && job !== undefined) {
+    result = findUserByNameAndJob(name, job);
+  } else if (name !== undefined) {
+    result = findUserByName(name);
   }
+  res.send({ users_list: result });
 });
 
 const addUser = (user) => {
@@ -105,3 +107,9 @@ app.delete("/users/:id", (req, res) => {
   deleteUser(id)
   res.send();
   })
+
+const findUserByNameAndJob = (name, job) => {
+  return users["users_list"].filter(
+    (user) => user["name"] === name && user["job"] === job
+  );
+};
