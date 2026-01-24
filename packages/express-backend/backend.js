@@ -74,8 +74,16 @@ const addUser = (user) => {
 
 app.post("/users", (req, res) => {
   const userToAdd = req.body;
-  addUser(userToAdd);
-  res.send();
+
+  const new_user = {
+    id: Math.floor(Math.random() * 1000),
+    name: userToAdd["name"],
+    job: userToAdd["job"]
+  }
+
+  addUser(new_user);
+
+  res.status(201).send(new_user);
 });
 
 const findUserById = (id) =>
