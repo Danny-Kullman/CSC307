@@ -100,22 +100,20 @@ app.get("/users/:id", (req, res) => {
 });
 
 const deleteUser = (id) => {
-  const index = users["users_list"].findIndex(
-    (user) => user.id === id
-  );
+  const index = users["users_list"].findIndex( (user) => String(user.id) === String(id));
 
   if (index === -1) {
-    return false;
+    return 404;
   }
 
   users.users_list.splice(index, 1);
-  return true;
+  return 204;
 };
 
 app.delete("/users/:id", (req, res) => {
   const id = req.params["id"];
-  deleteUser(id)
-  res.send();
+  const status = deleteUser(id)
+  res.status(status).send();
   })
 
 const findUserByNameAndJob = (name, job) => {
