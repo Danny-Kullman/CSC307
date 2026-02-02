@@ -39,44 +39,6 @@ app.listen(port, () => {
   );
 });
 
-// const users = {
-//     users_list: [
-//         {
-//         id: "xyz789",
-//         name: "Charlie",
-//         job: "Janitor"
-//         },
-//         {
-//         id: "abc123",
-//         name: "Mac",
-//         job: "Bouncer"
-//         },
-//         {
-//         id: "ppp222",
-//         name: "Mac",
-//         job: "Professor"
-//         },
-//         {
-//         id: "yat999",
-//         name: "Dee",
-//         job: "Aspring actress"
-//         },
-//         {
-//         id: "zap555",
-//         name: "Dennis",
-//         job: "Bartender"
-//         }
-//       ]
-// }
-
-
-// const findUserByName = (name) => {
-//   return users["users_list"].filter(
-//     (user) => user["name"] === name
-//   );
-// };
-
-
 app.get("/users", (req, res) => {
   const name = req.query.name;
   const job = req.query.job;
@@ -91,25 +53,6 @@ app.get("/users", (req, res) => {
     });
 });
 
-
-// app.get("/users", (req, res) => {
-//   const name = req.query.name;
-//   const job = req.query.job
-//   let result = users.users_list;
-
-//   if (name !== undefined && job !== undefined) {
-//     result = findUserByNameAndJob(name, job);
-//   } else if (name !== undefined) {
-//     result = findUserByName(name);
-//   }
-//   res.send({ users_list: result });
-// });
-
-// const addUser = (user) => {
-//   users["users_list"].push(user);
-//   return user;
-// };
-
 app.post("/users", (req, res) => {
   const userToAdd = req.body;
 
@@ -122,10 +65,6 @@ app.post("/users", (req, res) => {
       res.status(400).send("Invalid user data");
     });
 });
-
-
-// const findUserById = (id) =>
-//   users["users_list"].find((user) => user["id"] === id);
 
 app.get("/users/:id", (req, res) => {
   const id = req.params["id"];
@@ -140,17 +79,6 @@ app.get("/users/:id", (req, res) => {
   });
 });
 
-// const deleteUser = (id) => {
-//   const index = users["users_list"].findIndex( (user) => String(user.id) === String(id));
-
-//   if (index === -1) {
-//     return 404;
-//   }
-
-//   users.users_list.splice(index, 1);
-//   return 204;
-// };
-
 app.delete("/users/:id", (req, res) => {
   const id = req.params["id"];
   deleteUser(id)
@@ -158,7 +86,7 @@ app.delete("/users/:id", (req, res) => {
       if (!deletedUser) {
         return res.status(404).send("Not found");
       }
-      res.status(204).send(); // <-- matches your frontend
+      res.status(204).send();
     })
     .catch((error) => {
       console.log(error);
@@ -166,9 +94,3 @@ app.delete("/users/:id", (req, res) => {
     });
 
 });
-
-// const findUserByNameAndJob = (name, job) => {
-//   return users["users_list"].filter(
-//     (user) => user["name"] === name && user["job"] === job
-//   );
-// };
