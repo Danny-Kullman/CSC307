@@ -7,20 +7,20 @@ import Form from "./Form";
 function MyApp() {
   const [characters, setCharacters] = useState([]);
 
-  function deleteUser(id) {
-    return fetch(`http://localhost:8000/users/${id}`, {
+  function deleteUser(_id) {
+    return fetch(`http://localhost:8000/users/${_id}`, {
       method: "DELETE",
     });
   }
 
   function removeOneCharacter(index) {
-    const id = characters[index].id;
-    deleteUser(id)
+    const _id = characters[index]._id;
+    deleteUser(_id)
     .then((res) => {
       if (res.status !== 204){
         throw new Error("Delete failed");
       }
-      setCharacters(characters.filter((c) => c.id !== id));
+      setCharacters(characters.filter((c) => c._id !== _id));
     })
     .catch((error) => console.log(error));
 }

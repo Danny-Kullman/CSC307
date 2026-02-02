@@ -8,6 +8,8 @@ import {
   findUserById,
   findUserByName,
   findUserByJob,
+  findUserByNameAndJob,
+  deleteUser
 } from "./services/user-service.js";
 
 
@@ -111,16 +113,16 @@ app.get("/users", (req, res) => {
 app.post("/users", (req, res) => {
   const userToAdd = req.body;
 
-  const new_user = {
-    id: Math.floor(Math.random() * 1000),
-    name: userToAdd["name"],
-    job: userToAdd["job"]
-  }
-
-  addUser(new_user).then(() =>
-  res.status(201).send(new_user))
-  .catch((error) => {console.log(error), res.status(400).send("Invalid user data");})
+  addUser(userToAdd)
+    .then((savedUser) => {
+      res.status(201).send(savedUser);
+    })
+    .catch((error) => {
+      console.log(error);
+      res.status(400).send("Invalid user data");
+    });
 });
+
 
 // const findUserById = (id) =>
 //   users["users_list"].find((user) => user["id"] === id);
@@ -138,22 +140,32 @@ app.get("/users/:id", (req, res) => {
   });
 });
 
-const deleteUser = (id) => {
-  const index = users["users_list"].findIndex( (user) => String(user.id) === String(id));
+// const deleteUser = (id) => {
+//   const index = users["users_list"].findIndex( (user) => String(user.id) === String(id));
 
-  if (index === -1) {
-    return 404;
-  }
+//   if (index === -1) {
+//     return 404;
+//   }
 
-  users.users_list.splice(index, 1);
-  return 204;
-};
+//   users.users_list.splice(index, 1);
+//   return 204;
+// };
 
 app.delete("/users/:id", (req, res) => {
   const id = req.params["id"];
-  const status = deleteUser(id)
-  res.status(status).send();
-  })
+  deleteUser(id)
+    .then((deletedUser) => {
+      if (!deletedUser) {
+        return res.status(404).send("Not found");
+      }
+      res.status(204).send(); // <-- matches your frontend
+    })
+    .catch((error) => {
+      console.log(error);
+      res.status(500).send("Server error.");
+    });
+
+});
 
 // const findUserByNameAndJob = (name, job) => {
 //   return users["users_list"].filter(
